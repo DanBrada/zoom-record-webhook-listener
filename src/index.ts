@@ -11,7 +11,8 @@ app.post("/webhooks/recordone", (req, res)=>{
 	const rqBody = req.body;
 	console.log(rqBody)
 
-	res.send("")
+	res.status(200)
+	res.send(req.body)
 })
 
 
