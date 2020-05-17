@@ -1,7 +1,7 @@
-import Express = require("express")
-const app = Express();
+const express = require("express")
+const app = express();
 
-app.use(Express.json())
+app.use(express.json())
 
 app.post("/webhooks/recordone", (req, res)=>{
 	res.set("Access-Control-Allow-Origin", "*")
