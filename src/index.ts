@@ -1,6 +1,8 @@
 import Express = require("express")
 const app = Express();
 
+app.use(Express.json())
+
 app.post("/webhooks/recordone", (req, res)=>{
 	console.log("Request coming!")
 	console.log(req)
