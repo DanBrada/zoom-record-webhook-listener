@@ -2,6 +2,8 @@ import express = require("express")
 const app = express();
 import {ZoomMediaWebHookData} from "./classes/recievedWebhook";
 require("dotenv").config();
+const path = require("path")
+import fetch = require("node-fetch")
 
 app.use(express.json())
 
@@ -63,9 +65,52 @@ app.get("/getRecord/:meetId",async (req,res)=>{
 })
 
 
-app.get("/getToken?", (req, res)=>{
-
+app.get("/getToken", (req, res)=>{
+	res.set("Access-Control-Allow")
+	try{
+		const code = req.query.code;
+		const appId = process.env.APPID
+		const appSecret = process.env.APPSECRET
+		fetch(`https://api.zoom.us/oauth/token?grant_type=authorization&code=${code}&redirect_uri=${escape("localhost:3000")}`,{
+			method: "POST",
+			headers: {
+				authentication: `Base ${new Buffer(`${appId}:${appSecret}`).toString('base64')}`
+			}
+		}).then(async rez=>{
+			console.log(rez.body)
+			const responseBody = await parseResponseStream(rez)
+			const responseJSON = JSON.parse(responseBody)
+			if(rez.status == 200 && responseJSON.access_token){
+				res.status(200).send(JSON.stringify({
+					token: responseJSON.access_code
+				}))
+			}else{
+				res.status(rez.status)
+				res.send(responseJSON)
+			}
+		})
+	}catch(e){
+		res.status(500).send(e.message)
+	}
 })
 
+app.get("/backendTest",(req,res)=>{
+	res.set("Content-Type","text/html")
+	res.status(200)
+	res.sendFile(path.resolve("index.html"))
+})
 
 app.listen(3030, ()=>{console.log("listenting on 3030")})
+
+
+async function parseResponseStream(response){
+	const reader = response.body.getReader()
+	let outString = ""
+	await reader.read().then(function cytac({done,value}){
+		if(done) return
+		value.forEach(e=>outString += String.fromCharCode(e))
+		return reader.read.then(cytac)
+	})
+
+	return outString
+}

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Nevěřil jsem že tohle někdy budu muset udělat xd</title>
+</head>
+<body>
+<a href="https://zoom.us/oauth/authorize?response_type=code&client_id=I0MmCBWOQr2rWFjtDcAUUQ&redirect_uri=http://localhost%3A3030/backendTest" target="_blank" rel="noopener noreferrer"><img src="https://marketplacecontent.zoom.us/zoom_marketplace/img/add_to_zoom.png" height="32" alt="Add to ZOOM" /></a>
+<button onclick="tryLogin()">Zkus získat login</button>
+<script>
+    async function tryLogin(){
+        const url = new URL(window.location.href)
+
+        try{
+            // if(!url.searchParams.get("code")) throw "s"
+            const code = url.searchParams.get("code")
+            console.log(code)
+            const ficc = await fetch(`http://${window.location.host}/getToken?code=${code}`,{
+                method: "GET",
+            })
+            const reader = ficc.body.getReader()
+            let outString = ""
+            await reader.read().then(function lol({done,value}){
+                if(done) return
+                value.forEach(e=>outString += String.fromCharCode(e))
+                return reader.read().then(lol)
+            })
+            console.log(outString)
+
+
+        }catch(e){
+            window.alert("napřed se přihlaš přes zoom (tlačítko add to zoom ;))")
+        }
+    }
+</script>
+</body>
+</html>
