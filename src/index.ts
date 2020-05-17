@@ -2,6 +2,7 @@ import Express = require("express")
 const app = Express();
 
 app.post("/webhooks/recordone", (req, res)=>{
+	console.log("Request coming!")
 	console.log(req)
 	const rqBody = req.body;
 	console.log(rqBody)
