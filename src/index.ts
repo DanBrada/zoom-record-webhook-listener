@@ -1,8 +1,9 @@
 import Express = require("express")
 const app = Express();
 
-app.post("/webhooks/recordingComplete", (req, res)=>{
-	const rqBody  = req.body;
+app.post("/webhooks/recordone", (req, res)=>{
+	console.log(req)
+	const rqBody = req.body;
 	console.log(rqBody)
 
 	res.send("")
