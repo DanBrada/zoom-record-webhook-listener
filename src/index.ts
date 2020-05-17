@@ -4,6 +4,7 @@ const app = Express();
 app.post("/webhooks/recordone", (req, res)=>{
 	console.log("Request coming!")
 	console.log(req)
+	console.log(req.body)
 	const rqBody = req.body;
 	console.log(rqBody)
 
