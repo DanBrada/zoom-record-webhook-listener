@@ -3,6 +3,12 @@ const app = express();
 
 app.use(express.json())
 
+app.options("/webhooks/recordone", (req,res)=>{
+	res.set("Access-Control-Allow-Origin","*")
+	res.status(200)
+	res.send("")
+})
+
 app.post("/webhooks/recordone", (req, res)=>{
 	res.set("Access-Control-Allow-Origin", "*")
 	console.log("Request coming!")
