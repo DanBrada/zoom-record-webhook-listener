@@ -4,6 +4,7 @@ const app = Express();
 app.use(Express.json())
 
 app.post("/webhooks/recordone", (req, res)=>{
+	res.set("Allow-Access-Allow-Origin", "*")
 	console.log("Request coming!")
 	console.log(req)
 	console.log(req.body)
