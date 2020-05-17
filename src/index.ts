@@ -5,12 +5,14 @@ app.use(express.json())
 
 app.options("/webhooks/recordone", (req,res)=>{
 	res.set("Access-Control-Allow-Origin","*")
+	res.set("Access-Control-Allow-Headers","*")
 	res.status(200)
 	res.send("")
 })
 
 app.post("/webhooks/recordone", (req, res)=>{
 	res.set("Access-Control-Allow-Origin", "*")
+	res.set("Access-Control-Allow-Headers","*")
 	console.log("Request coming!")
 	console.log(req)
 	console.log(req.body)
